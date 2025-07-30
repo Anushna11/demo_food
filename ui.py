@@ -49,7 +49,7 @@ elif(select=="Prediction Page"):
                    "prefers_spicy":prefers_spicy,
                    "diet":diet
                }
-               res=requests.post("http://127.0.0.1:8000/predict",json=data)
+               res=requests.post("https://demo-food-2.onrender.com/predict",json=data)
                result=res.json()
                st.write("Predicted Food : ",result["Predicted_food"])
 elif(select=="Admin Page"):
