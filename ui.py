@@ -2,7 +2,7 @@ import streamlit as st
 import pymongo
 import requests
 
-client=pymongo.MongoClient("mongodb://localhost:27017/")
+client=pymongo.MongoClient("mongodb+srv://anushna:Qu6pY3fU2I7hsCS3@cluster1.sjmrtri.mongodb.net/")
 db=client["Food_prediction"]
 collection=db["users"]
 prediction_collection = db["predictions"]
