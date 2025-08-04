@@ -1,29 +1,22 @@
 import streamlit as st
 import pymongo
 import requests
-
-# MongoDB setup
+ 
 client = pymongo.MongoClient("mongodb+srv://anushna:Qu6pY3fU2I7hsCS3@cluster1.sjmrtri.mongodb.net/")
 db = client["Food_prediction"]
 collection = db["users"]
-prediction_collection = db["predictions"]  # Optional: for separate prediction history
-
-# Admin credentials
+prediction_collection = db["predictions"]   
+ 
 ADMIN_USERNAME = "anu"
 ADMIN_PASSWORD = "anu"
 
 st.title("🍽️ Food Predictor 😋")
-
-# Page navigation
 select = st.sidebar.selectbox("Page Navigator", ["Registration Page", "Prediction Page", "Admin Page"])
-
-# ---------------------- Registration Page ----------------------
 if select == "Registration Page":
     st.header("📝 Registration Page")
     un = st.text_input("Choose a Username")
     pw = st.text_input("Choose a Password", type="password")
     bn = st.button("Register")
-
     if bn:
         if un != "" and pw != "":
             e_user = collection.find_one({"username": un, "password": pw})
@@ -38,8 +31,7 @@ if select == "Registration Page":
                 st.success("✅ Registration successful!")
         else:
             st.error("⚠️ Enter a proper username and password")
-
-# ---------------------- Prediction Page ----------------------
+ 
 elif select == "Prediction Page":
     st.header("🔐 Login to Predict Your Food")
 
@@ -52,8 +44,6 @@ elif select == "Prediction Page":
         if user:
             st.markdown("---")
             st.header(f"👋 Hi {un}, predict your food preference")
-
-            # Inputs for prediction
             mood = st.selectbox("Mood", ["happy", "tired", "sad", "energetic", "bored", "angry", "neutral", "excited", "stressed"])
             time_of_day = st.selectbox("Time of Day", ["breakfast", "lunch", "evening", "dinner"])
             diet = st.selectbox("Choose your diet", ["veg", "non-veg", "vegan"])
@@ -74,14 +64,10 @@ elif select == "Prediction Page":
                     result = res.json()
                     predicted_food = result.get("Predicted_food", "None")
                     st.success(f"🍛 Predicted Food: {predicted_food}")
-
-                    # ✅ Save prediction to user's record
                     collection.update_one(
                         {"username": un},
                         {"$set": {"Predicted_food": predicted_food}}
                     )
-
-                    # Optional: Save prediction to separate collection
                     prediction_collection.insert_one({
                         "username": un,
                         "prediction": predicted_food,
@@ -92,8 +78,6 @@ elif select == "Prediction Page":
                     st.error(f"Prediction failed: {e}")
         else:
             st.error("❌ Invalid username or password")
-
-# ---------------------- Admin Page ----------------------
 elif select == "Admin Page":
     st.header("👨‍💼 Admin Login")
 
