@@ -60,7 +60,7 @@ elif select == "Prediction Page":
                 }
 
                 try:
-                    res = requests.post("http://127.0.0.1:8000/predict", json=data)
+                    res = requests.post("https://demo-food-3.onrender.com/predict", json=data)
                     result = res.json()
                     predicted_food = result.get("Predicted_food", "None")
                     st.success(f"🍛 Predicted Food: {predicted_food}")
@@ -97,3 +97,4 @@ elif select == "Admin Page":
                 st.markdown("---")
         else:
             st.error("❌ Invalid Admin Credentials")
+
